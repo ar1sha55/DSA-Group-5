@@ -7,9 +7,7 @@
 
 using namespace std;
 
-cout << "Hello World";
 
-cout << "kjaskaj";
 
 class Pizza{
     private:
@@ -19,7 +17,6 @@ class Pizza{
     string set;
     double price;
 
-<<<<<<< HEAD
     public:
 
     Pizza(string i, string n, double p):
@@ -29,17 +26,27 @@ class Pizza{
 
         cout << "PIZZA SALES AND ORDER MANAGEMENT SYSTEM\n\n";
 
-        cout << "==MAIN MENU==\n\n";
+        cout << "== MAIN MENU ==\n\n";
 
-        cout << "[1] STAFF\n [2] CUSTOMER"
+        cout << "[1] STAFF\n [2] CUSTOMER\n"
     }
-=======
-    private:
+    
+
+    void pizzamenu() const{
+
+        cout <<
+    }
+
+}
 
 
->>>>>>> 48d2be41e990777c7149b1f2a5a79ebc3d85701b
-    
-    
+int main(){
+
+
+
+
+system "pause";
+return 0;
 
 }
 
@@ -49,7 +56,5 @@ class Pizza{
 
 
 
-system "pause";
-return 0;
 
-cout << "test 2";
+

@@ -35,6 +35,7 @@ class Pizza{
 
     void pizzamenucust() const{
 
+        cout << "yelo";
         cout << "arisha suruh tukar something";
     }
 

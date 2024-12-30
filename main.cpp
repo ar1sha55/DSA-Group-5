@@ -7,8 +7,6 @@
 
 using namespace std;
 
-cout << "Hello World";
-cout << "yelo";
 
 
 

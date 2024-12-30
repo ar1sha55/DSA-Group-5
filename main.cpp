@@ -34,9 +34,9 @@ class Pizza{
     }
     
 
-    void pizzamenu() const{
+    void pizzamenucust() const{
 
-        cout <<
+        cout << "arisha suruh tukar something";
     }
 
 }

@@ -428,7 +428,7 @@ class DoublyLLDrink
 class OrderNode
 {
     public:
-        CustomerOrder order;
+        CustOrder order;
         OrderNode* next;
         OrderNode(){}
         OrderNode(CustomerOrder o)
@@ -452,6 +452,7 @@ class QueueOrder
             delete [] items;
         }
 
+        //delete all order
         void deleteAll()
         {
             OrderNode* curr = front;
@@ -463,26 +464,30 @@ class QueueOrder
                 curr = front;
             }
 
-            cout << "== ALL ORDERS HAVE BEEN DELETED =="
+            cout << "== ALL ORDERS HAVE BEEN DELETED ==\n\n";
         }
 
+        //check if queue empty
         bool isEmpty()
         {
             return (back = nullptr && front == nullptr);
         }
 
-        void addOrder(CustOrder x)
+        //add order to queue
+        void enqueue(CustOrder x)
         {
             
         }
 
+        //order has been done and exit from the queue
+        void dequeue()
+        {
 
+        }
 
+        //display all order
         void displayOrder(){}
 
-        void InsertOrder(CustomerOrder x){}
-
-        void deleteOrder(){}
 };
 
 void customer_menu()

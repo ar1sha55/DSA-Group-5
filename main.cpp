@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <fstream>
 using namespace std;
 class Staff
 {
@@ -34,6 +35,17 @@ class CustOrder {
         string getCustName(){return custName;}
         string getContactNum(){return contactNum;}
         string getOrderStatus(){return orderStatus;}
+
+        void setCustName() {
+            cout << "Enter customer name: ";
+            getline(cin, custName);
+        }
+
+        void setContactNumber() {
+            cout << "Enter customer number: ";
+            getline(cin, custName);
+        }
+       
 
 };
 
@@ -175,6 +187,21 @@ class DoublyLLPizza
             newPizza->next = NULL;
             newPizza->prev = tail;
             tail = newPizza;
+
+            
+            ofstream outFile("PizzaHistory.txt", ios::app); // Open in append mode
+            if (outFile.is_open()) {
+                 outFile << p.getPizzaID() << " " 
+                << p.getPizzaName() << " " 
+                << p.getPersonal() << " "
+                << p.getRegular() << " " 
+                << p.getLarge() << endl;
+
+                 outFile.close();
+                cout << "Pizza details saved to file." << endl;
+            } else {
+                cerr << "Error: Could not open file to save pizza details." << endl;
+            }
         }
 
         void deletePizza()

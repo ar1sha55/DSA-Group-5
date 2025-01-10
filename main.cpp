@@ -425,6 +425,23 @@ class OrderNode
         }
 };
 
+class QueueOrder
+{
+    private:
+        DoublyLLOrder* head;
+        DoublyLLOrder* tail;
+        int totalOrder;
+
+    public:
+        QueueOrder() {head = nullptr; tail = nullptr; totalOrder = 0;}
+
+        void displayOrder(){}
+
+        void InsertOrder(CustomerOrder x){}
+
+        void deleteOrder(){}
+};
+
 void customer_menu()
 {
     int custChoice;

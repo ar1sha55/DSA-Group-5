@@ -428,12 +428,12 @@ class OrderNode
 class QueueOrder
 {
     private:
-        DoublyLLOrder* head;
-        DoublyLLOrder* tail;
-        int totalOrder;
+        DoublyLLOrder* front;
+        DoublyLLOrder* rear;
+        int item;
 
     public:
-        QueueOrder() {head = nullptr; tail = nullptr; totalOrder = 0;}
+        QueueOrder() {head = nullptr; tail = nullptr; item = 0;}
 
         void displayOrder(){}
 

@@ -445,16 +445,14 @@ class DoublyLLDrink
             newDrink->prev = tail;
             tail = newDrink;
 
-             ofstream outFile("PizzaHistory.txt", ios::app); // Open in append mode
+            ofstream outFile("DrinkHistory.txt", ios::app); // Open in append mode
             if (outFile.is_open()) {
-                 outFile << p.getPizzaID() << " " 
-                << p.getPizzaName() << " " 
-                << p.getPersonal() << " "
-                << p.getRegular() << " " 
-                << p.getLarge() << endl;
+                 outFile << d.getDrinkID() << " " 
+                << d.getDrinkName() << " " 
+                << d.getDrinkPrice() << endl;
 
                  outFile.close();
-                cout << "Pizza details saved to file." << endl;
+                cout << "Drink details saved to file." << endl;
             } else {
                 cerr << "Error: Could not open file to save pizza details." << endl;
             }
@@ -676,7 +674,6 @@ int viewMenu()
 
     cout << "1. Add Order" << endl;
     cout << "2. View Cart" << endl;
-    cout << "3. View Order Status" << endl<< endl;
 
     cout << "Enter choice: \n[ ]\b\b";
     cin >> y;
@@ -693,19 +690,41 @@ void addOrder()
     cout << "ITEM ID => [   ]\b\b";
     cin >> item;
 
-    while()
+    //tunjuk list menu
+
+    //tanya a la carte ke set
+    /*a la carte
+    nampak pizza
+    drink optional
+    */
+
+   /*combo
+   pizza
+   drink mandatory
+   */
+
+  //tanya nak add lagi tak, kalu add tunjuk balik 
+
+  //view cart = tunjuk
+}
+
+void manage_order()
+{
+
+}
+
+void view_cart()
+{
+    
 }
 
 
-
-void customer_menu()
+void customer_menu(int& custChoice)
 {
     int custChoice;
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. View All Menu" << endl;
-    cout << "2. Search Menu" << endl;
-    cout << "3. View Cart" << endl;
-    cout << "4. View Order Status" << endl<< endl;
+    cout << "2. View Order Status" << endl<< endl;
 
     cout << "Enter choice: ";
     cin >> custChoice;
@@ -787,7 +806,7 @@ int main()
     Staff staffArray[3] = { Staff("A23CS0111", "Staff123"),
                             Staff("A23CS0154", "Staff123")};
     int found = 0;
-    int staffChoice;
+    int staffChoice, custChoice;
     int manage_choice;
 
     //Pizza Variables
@@ -952,7 +971,17 @@ int main()
     }
 
     customer: 
-    customer_menu();
+    customer_menu(custChoice); //add order dengan view cart
+
+    /*switch(custChoice)
+    {
+        case 1: //ni untuk dua pilihan cust interface
+            ViewMenu:
+            switch(choice) //ni untuk add order dengan view cart
+
+    }*/
+
+
     
 
 }

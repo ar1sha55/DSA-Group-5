@@ -429,10 +429,10 @@ class QueueOrder
 {
     private:
         DoublyLLOrder* front;
-        DoublyLLOrder* rear;
+        DoublyLLOrder* back;
 
     public:
-        QueueOrder() {front = 0; rear = -1;}
+        QueueOrder() {front = 0; back = -1;}
 
         ~QueueOrder()
         {
@@ -441,12 +441,7 @@ class QueueOrder
 
         bool isEmpty()
         {
-            return (rear < front);
-        }
-
-        int getTotalOrder()
-        {
-            return total;
+            return (back < front);
         }
 
         void addOrder(CustOrder x)

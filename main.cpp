@@ -633,6 +633,32 @@ class QueueOrder
 
 };
 
+void viewMenu()
+{
+    DoublyLLDrink drink;
+    DoublyLLPizza pizza;
+
+    cout << "MENU FOR TODAY:\n";
+    pizza.
+}
+
+void addOrder()
+{
+    string item;
+
+    cout << "Insert the name of the ITEM ID you want to add.\n";
+    cout << "ITEM ID => [   ]\b\b";
+    cin >> item;
+
+    while()
+}
+
+void viewCart(){}
+
+void orderStatus(){}
+
+
+
 void customer_menu()
 {
     int custChoice;

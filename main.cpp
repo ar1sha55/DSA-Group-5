@@ -17,6 +17,26 @@ class Staff
         string getStaffPassword(){return password;}
 };
 
+class CustOrder {
+    
+    private:
+        string custName, contactNum, orderStatus;
+        int orderID;
+
+    public:
+        CustOrder(){};
+        CustOrder(string cust, string contact, string order)
+        {
+            custName = cust;
+            contactNum = contact;
+            orderStatus = order;
+        }
+        string getCustName(){return custName;}
+        string getContactNum(){return contactNum;}
+        string getOrderStatus(){return orderStatus;}
+
+};
+
 class Pizza
 {
     private:

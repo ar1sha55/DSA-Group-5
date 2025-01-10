@@ -414,22 +414,20 @@ class OrderNode
 {
     public:
         CustomerOrder order;
-        OrderNode* prev;
         OrderNode* next;
         OrderNode(){}
         OrderNode(CustomerOrder o)
         {
             order = o;
             next = nullptr;
-            prev = nullptr;
         }
 };
 
 class QueueOrder
 {
     private:
-        DoublyLLOrder* front;
-        DoublyLLOrder* back;
+        OrderNode* front;
+        OrderNode* back;
 
     public:
         QueueOrder() {front = 0; back = -1;}

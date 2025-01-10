@@ -422,6 +422,70 @@ class DoublyLLDrink
 
             delete delNode;
         }
+
+        void modifyDrink()
+        {
+            int modifyNo;
+            DrinkNode* modifyNode = head;
+            int currentIndex = 1;
+            char ch;
+
+            modify:
+            displayAllDrink(2);
+
+            if(head == NULL)
+                return;
+
+            cout << endl;
+            cout << "Enter No (Press 0 to back) : ";
+            cin >> modifyNo;
+
+            if(modifyNo == 0)
+                return;
+
+            while(currentIndex != modifyNo)
+            {
+                currentIndex++;
+                modifyNode = modifyNode->next;
+            }
+
+            system("cls");
+            cout << "Selected Drink: ";
+            modifyNode->drink.drinkInfoStaff();
+            cout << endl;
+
+            cout << "Change Name? (Y/N): ";
+            ch = getch();
+            cout << ch;
+
+            if(toupper(ch) == 'Y')
+            {
+                cout << endl;
+                cin.ignore();
+                modifyNode->drink.setName();
+            }
+            
+            cout << endl;
+            cout << "Change Price? (Y/N): ";
+            ch = getch();
+            cout << ch;
+
+            if(toupper(ch) == 'Y')
+            {
+                cin.ignore();
+                modifyNode->drink.setprice();
+            }
+            else
+            {
+                return;
+            }
+
+            cout << endl;
+
+            cout << "Drink Updated!" << endl;
+            cout << "New: ";
+            modifyNode->drink.drinkInfoStaff();
+        }
 };
 
 
@@ -542,7 +606,7 @@ void staff_menu(int& staffChoice)
     cout << "3. View All Order" << endl;
     cout << "4. Monthly Report" << endl << endl;
 
-    cout << "Enter choice: ";
+    cout << "Enter choice (Press 0 to back): ";
     cin >> staffChoice;
 }
 
@@ -623,7 +687,7 @@ int main()
     back:
     cout << "PIZZARIA RESTAURANT" << endl << endl;
 
-    cout << "1. Staff \n2. Customer" << endl << endl;
+    cout << "1. Staff \n2. Customer \n3. Exit" << endl << endl;
     cout << "Enter choice: ";
     cin >> choice;
 
@@ -634,6 +698,11 @@ int main()
         goto staff;
     else if(choice == "2")
         goto customer;
+    else if(choice == "3")
+    {
+        cout << "Bye :>" << endl;
+        return 0;
+    }
     else
     {
         system("cls");
@@ -733,6 +802,14 @@ int main()
                     goto manageMenu;
                     break;
 
+                case 6 :
+                    drinkList.modifyDrink();
+                    cout << endl;
+                    system("pause");
+                    goto manageMenu;
+                    break;
+
+
                 case 7 : 
                     cout << "PIZZA" << endl;
                     pizzaList.displayAllPizza(2);
@@ -749,10 +826,11 @@ int main()
                     break; 
             }
 
-
+        default : 
+            system("cls");
+            goto back;
             
     }
-
 
     customer: 
     customer_menu();

@@ -660,13 +660,29 @@ class QueueOrder
 
 };
 
-void viewMenu()
+int viewMenu()
 {
     DoublyLLDrink drink;
     DoublyLLPizza pizza;
 
-    cout << "MENU FOR TODAY:\n";
-    pizza.
+    int x = 1;
+    int y;
+
+    cout << "MENU FOR TODAY:\nDRINKS:";
+    drink.displayAllDrink(x);
+
+    cout << "MENU FOR TODAY:\nPIZZA:";
+    pizza.displayAllPizza(x);
+
+    cout << "1. Add Order" << endl;
+    cout << "2. View Cart" << endl;
+    cout << "3. View Order Status" << endl<< endl;
+
+    cout << "Enter choice: \n[ ]\b\b";
+    cin >> y;
+
+    return y;
+    
 }
 
 void addOrder()
@@ -679,10 +695,6 @@ void addOrder()
 
     while()
 }
-
-void viewCart(){}
-
-void orderStatus(){}
 
 
 

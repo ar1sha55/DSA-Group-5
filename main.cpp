@@ -447,6 +447,8 @@ class QueueOrder
                 delete curr;
                 curr = front;
             }
+
+            cout << "== ALL ORDERS HAVE BEEN DELETED =="
         }
 
         bool isEmpty()

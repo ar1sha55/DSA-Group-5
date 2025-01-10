@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include <fstream>
 using namespace std;
 class Staff
 {
@@ -16,26 +15,6 @@ class Staff
         }
         string getStaffID(){return staffID;}
         string getStaffPassword(){return password;}
-};
-
-class CustOrder {
-    
-    private:
-        string custName, contactNum, orderStatus;
-        int orderID;
-
-    public:
-        CustOrder(){};
-        CustOrder(string cust, string contact, string order)
-        {
-            custName = cust;
-            contactNum = contact;
-            orderStatus = order;
-        }
-        string getCustName(){return custName;}
-        string getContactNum(){return contactNum;}
-        string getOrderStatus(){return orderStatus;}
-
 };
 
 class Pizza
@@ -176,20 +155,6 @@ class DoublyLLPizza
             newPizza->next = NULL;
             newPizza->prev = tail;
             tail = newPizza;
-
-            ofstream outFile("PizzaHistory.txt", ios::app); // Open in append mode
-            if (outFile.is_open()) {
-                 outFile << p.getPizzaID() << " " 
-                << p.getPizzaName() << " " 
-                << p.getPersonal() << " "
-                << p.getRegular() << " " 
-                << p.getLarge() << endl;
-
-                 outFile.close();
-                cout << "Pizza details saved to file." << endl;
-            } else {
-                cerr << "Error: Could not open file to save pizza details." << endl;
-            }
         }
 
         void deletePizza()
@@ -245,6 +210,72 @@ class DoublyLLPizza
             }
 
             delete delNode;
+        }
+
+        void modifyPizza()
+        {
+            int modifyNo;
+            PizzaNode* modifyNode = head;
+            int currentIndex = 1;
+            char ch;
+
+            modify:
+            displayAllPizza(2);
+
+            if(head == NULL)
+                return;
+
+            cout << endl;
+            cout << "Enter No (Press 0 to back) : ";
+            cin >> modifyNo;
+
+            if(modifyNo == 0)
+                return;
+
+            while(currentIndex != modifyNo)
+            {
+                currentIndex++;
+                modifyNode = modifyNode->next;
+            }
+
+            system("cls");
+            cout << "Selected Pizza: ";
+            modifyNode->pizza.pizzaInfoStaff();
+            cout << endl;
+
+            cout << "Change Name? (Y/N): ";
+            ch = getch();
+            cout << ch;
+            cin.ignore();
+
+
+            if(toupper(ch) == 'Y')
+            {
+                cout << endl;
+                modifyNode->pizza.setname();
+            }
+            
+            cout << endl;
+            cout << "Change Price? (Y/N): ";
+            ch = getch();
+            cout << ch;
+            cin.ignore();
+
+            if(toupper(ch) == 'Y')
+            {
+                modifyNode->pizza.setPersonal();
+                modifyNode->pizza.setRegular();
+                modifyNode->pizza.setLarge();
+            }
+            else
+            {
+                return;
+            }
+
+            cout << endl;
+            cout << "Pizza Updated!" << endl;
+            cout << "New: ";
+            modifyNode->pizza.pizzaInfoStaff();
         }
 };
 
@@ -488,109 +519,12 @@ class DoublyLLDrink
         }
 };
 
-
-class OrderNode
-{
-    public:
-        CustOrder order;
-        OrderNode* next;
-        OrderNode(){}
-        OrderNode(CustomerOrder o)
-        {
-            order = o;
-            next = nullptr;
-        }
-};
-
-class QueueOrder
-{
-    private:
-        OrderNode* front;
-        OrderNode* back;
-
-    public:
-        QueueOrder() {front = nullptr; back = nullptr;}
-
-        ~QueueOrder()
-        {
-            delete [] items;
-        }
-
-        //delete all order
-        void deleteAll()
-        {
-            OrderNode* curr = front;
-            
-            while(curr)
-            {
-                front = curr->next;
-                delete curr;
-                curr = front;
-            }
-
-            cout << "== ALL ORDERS HAVE BEEN DELETED ==\n\n";
-        }
-
-        //check if queue empty
-        bool isEmpty()
-        {
-            return (back = nullptr && front == nullptr);
-        }
-
-        //add order to queue
-        void enqueue(CustOrder x)
-        {
-            OrderNode* newOrder = new Node(x);
-
-            if(isEmpty())
-            {
-                front = back = newOrder;
-            }
-            else
-            {
-                back->next = newOrder;
-                back = newOrder;
-            }
-        }
-
-        //order has been done and exit from the queue
-        void dequeue()
-        {
-            OrderNode *curr = front;
-
-            front = curr->next;
-            curr->next = NULL;
-            delete curr;
-
-            if(!front) 
-            back = NULL;
-            
-        }
-
-        //display all order
-        void displayOrder(){}
-
-};
-
-void viewMenu(){}
-
-void addOrder()
-{
-    
-}
-
-void viewCart(){}
-
-void orderStatus(){}
-
-
-
 void customer_menu()
 {
     int custChoice;
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. View All Menu" << endl;
-    cout << "2. Add Order" << endl;
+    cout << "2. Search Menu" << endl;
     cout << "3. View Cart" << endl;
     cout << "4. View Order Status" << endl<< endl;
 
@@ -664,7 +598,6 @@ void StaffAuth(Staff arr[], int& found)
             found = 1;
     }
 }
-
 
 
 int main()
@@ -801,6 +734,13 @@ int main()
                     system("pause");
                     goto manageMenu;
                     break;
+                
+                case 5 : 
+                    pizzaList.modifyPizza();
+                    cout << endl;
+                    system("pause");
+                    goto manageMenu;
+                    break;
 
                 case 6 :
                     drinkList.modifyDrink();
@@ -808,7 +748,6 @@ int main()
                     system("pause");
                     goto manageMenu;
                     break;
-
 
                 case 7 : 
                     cout << "PIZZA" << endl;
@@ -821,6 +760,7 @@ int main()
                     system("pause");
                     goto manageMenu;
                     break;
+
                 default : 
                     goto staffMenu; 
                     break; 

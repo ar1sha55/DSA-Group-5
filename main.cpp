@@ -510,11 +510,16 @@ class QueueOrder
 
 void viewMenu(){}
 
-void addOrder(){}
+void addOrder()
+{
+    
+}
 
 void viewCart(){}
 
 void orderStatus(){}
+
+
 
 void customer_menu()
 {

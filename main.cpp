@@ -430,10 +430,31 @@ class QueueOrder
     private:
         DoublyLLOrder* front;
         DoublyLLOrder* rear;
-        int item;
 
     public:
-        QueueOrder() {head = nullptr; tail = nullptr; item = 0;}
+        QueueOrder() {front = 0; rear = -1;}
+
+        ~QueueOrder()
+        {
+            delete [] items;
+        }
+
+        bool isEmpty()
+        {
+            return (rear < front);
+        }
+
+        int getTotalOrder()
+        {
+            return total;
+        }
+
+        void addOrder(CustOrder x)
+        {
+            
+        }
+
+
 
         void displayOrder(){}
 

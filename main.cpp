@@ -17,6 +17,26 @@ class Staff
         string getStaffPassword(){return password;}
 };
 
+class CustOrder {
+    
+    private:
+        string custName, contactNum, orderStatus;
+        int orderID;
+
+    public:
+        CustOrder(){};
+        CustOrder(string cust, string contact, string order)
+        {
+            custName = cust;
+            contactNum = contact;
+            orderStatus = order;
+        }
+        string getCustName(){return custName;}
+        string getContactNum(){return contactNum;}
+        string getOrderStatus(){return orderStatus;}
+
+};
+
 class Pizza
 {
     private:
@@ -397,6 +417,20 @@ class DoublyLLDrink
             newDrink->next = NULL;
             newDrink->prev = tail;
             tail = newDrink;
+
+             ofstream outFile("PizzaHistory.txt", ios::app); // Open in append mode
+            if (outFile.is_open()) {
+                 outFile << p.getPizzaID() << " " 
+                << p.getPizzaName() << " " 
+                << p.getPersonal() << " "
+                << p.getRegular() << " " 
+                << p.getLarge() << endl;
+
+                 outFile.close();
+                cout << "Pizza details saved to file." << endl;
+            } else {
+                cerr << "Error: Could not open file to save pizza details." << endl;
+            }
         }
 
         void deleteDrink()
@@ -517,6 +551,86 @@ class DoublyLLDrink
             cout << "New: ";
             modifyNode->drink.drinkInfoStaff();
         }
+};
+
+
+class OrderNode
+{
+    public:
+        CustOrder order;
+        OrderNode* next;
+        OrderNode(){}
+        OrderNode(CustOrder o)
+        {
+            order = o;
+            next = nullptr;
+        }
+};
+
+class QueueOrder
+{
+    private:
+        OrderNode* front;
+        OrderNode* back;
+
+    public:
+        QueueOrder() {front = nullptr; back = nullptr;}
+
+      
+        //delete all order
+        void deleteAll()
+        {
+            OrderNode* curr = front;
+            
+            while(curr)
+            {
+                front = curr->next;
+                delete curr;
+                curr = front;
+            }
+
+            cout << "== ALL ORDERS HAVE BEEN DELETED ==\n\n";
+        }
+
+        //check if queue empty
+        bool isEmpty()
+        {
+            return (back == nullptr && front == nullptr);
+        }
+
+        //add order to queue
+        void enqueue(CustOrder x)
+        {
+            OrderNode* newOrder = new OrderNode(x);
+
+            if(isEmpty())
+            {
+                front = back = newOrder;
+            }
+            else
+            {
+                back->next = newOrder;
+                back = newOrder;
+            }
+        }
+
+        //order has been done and exit from the queue
+        void dequeue()
+        {
+            OrderNode *curr = front;
+
+            front = curr->next;
+            curr->next = NULL;
+            delete curr;
+
+            if(!front) 
+            back = NULL;
+            
+        }
+
+        //display all order
+        void displayOrder(){}
+
 };
 
 void customer_menu()

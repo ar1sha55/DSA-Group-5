@@ -798,6 +798,7 @@ void StaffAuth(Staff arr[], int& found)
 }
 
 
+
 int main()
 {
     string choice;

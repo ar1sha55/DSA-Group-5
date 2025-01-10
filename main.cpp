@@ -476,7 +476,17 @@ class QueueOrder
         //add order to queue
         void enqueue(CustOrder x)
         {
-            
+            OrderNode* newOrder = new Node(x);
+
+            if(isEmpty())
+            {
+                front = back = newOrder;
+            }
+            else
+            {
+                back->next = newOrder;
+                back = newOrder;
+            }
         }
 
         //order has been done and exit from the queue
@@ -490,12 +500,20 @@ class QueueOrder
 
 };
 
+void viewMenu(){}
+
+void addOrder(){}
+
+void viewCart(){}
+
+void orderStatus(){}
+
 void customer_menu()
 {
     int custChoice;
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. View All Menu" << endl;
-    cout << "2. Search Menu" << endl;
+    cout << "2. Add Order" << endl;
     cout << "3. View Cart" << endl;
     cout << "4. View Order Status" << endl<< endl;
 

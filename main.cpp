@@ -389,6 +389,22 @@ class DoublyLLDrink
         }
 };
 
+
+class OrderNode
+{
+    public:
+        CustomerOrder order;
+        OrderNode* prev;
+        OrderNode* next;
+        OrderNode(){}
+        OrderNode(CustomerOrder o)
+        {
+            order = o;
+            next = nullptr;
+            prev = nullptr;
+        }
+};
+
 void customer_menu()
 {
     int custChoice;
@@ -468,6 +484,7 @@ void StaffAuth(Staff arr[], int& found)
             found = 1;
     }
 }
+
 
 
 int main()

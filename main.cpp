@@ -492,7 +492,15 @@ class QueueOrder
         //order has been done and exit from the queue
         void dequeue()
         {
+            OrderNode *curr = front;
 
+            front = curr->next;
+            curr->next = NULL;
+            delete curr;
+
+            if(!front) 
+            back = NULL;
+            
         }
 
         //display all order

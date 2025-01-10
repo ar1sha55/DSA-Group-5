@@ -430,16 +430,28 @@ class QueueOrder
         OrderNode* back;
 
     public:
-        QueueOrder() {front = 0; back = -1;}
+        QueueOrder() {front = nullptr; back = nullptr;}
 
         ~QueueOrder()
         {
             delete [] items;
         }
 
+        void deleteAll()
+        {
+            OrderNode* curr = front;
+            
+            while(curr)
+            {
+                front = curr->next;
+                delete curr;
+                curr = front;
+            }
+        }
+
         bool isEmpty()
         {
-            return (back < front);
+            return (back = nullptr && front == nullptr);
         }
 
         void addOrder(CustOrder x)

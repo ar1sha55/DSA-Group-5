@@ -1063,13 +1063,11 @@ int main()
                     break;
             }
 
-            cout << "Do you wish to add drinks?" << endl;
-            ch = getch();
-            cout << ch;
+            cust.addToCart(itemName, itemPrice);
 
-            while(toupper(ch) == 'Y')
+            do
             {
-                cout << "Do you wish to add drinks?" << endl;
+                cout << "\nDo you wish to add drinks?" << endl;
                 ch = getch();
                 cout << ch;
                 drinkList.displayAllDrink(1);
@@ -1084,15 +1082,15 @@ int main()
 
                 itemName = currentDrink->drink.getDrinkName();
                 itemPrice = currentDrink->drink.getDrinkPrice();
-            }
+                cust.addToCart(itemName, itemPrice);
+            } while(toupper(ch) == 'Y');
     
 
-            cust.addToCart(itemName, itemPrice);
             cout << endl;
             cust.viewCart();
             cout << "Add More? (Y/N): ";
                     ch = getch();
-                    cout << ch;
+                    cout << ch << endl;
             } while(toupper(ch) == 'Y');        
             
             goto menu_display;

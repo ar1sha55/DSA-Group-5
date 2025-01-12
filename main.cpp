@@ -2,7 +2,11 @@
 #include <string>
 #include <conio.h>
 #include <fstream>
+
 using namespace std;
+
+const int MAX_SIZE = 100;
+
 class Staff
 {
     private:
@@ -23,6 +27,11 @@ class CustOrder {
     private:
         string custName, contactNum, orderStatus;
         int orderID;
+        int counter = 0;
+
+        string itemName[MAX_SIZE];
+        int itemPrice[MAX_SIZE];
+        
 
     public:
         CustOrder(){};
@@ -44,6 +53,21 @@ class CustOrder {
         void setContactNumber() {
             cout << "Enter customer number: ";
             getline(cin, custName);
+        }
+
+        void addToCart(string n, double p)
+        {
+            itemName[counter] = n;
+            itemPrice[counter] = p;
+            counter++;
+        }
+
+        void viewCart()
+        {
+            for(int i=0; i<counter; i++)
+            {
+                cout << i+1 << ". " << itemName[i] << "   " << itemPrice[i] << endl;
+            }
         }
        
 
@@ -125,6 +149,7 @@ class PizzaNode
             next = NULL;
             prev = NULL;
         }    
+
 };
 
 class DoublyLLPizza
@@ -138,7 +163,7 @@ class DoublyLLPizza
 
         void displayAllPizza(int Usertype)
         {
-            PizzaNode* currentNode = head;
+            PizzaNode* currentPizza = head;
             if(head == NULL)
             {
                 cout << "Currently No Pizza Available!" << endl;
@@ -148,21 +173,25 @@ class DoublyLLPizza
             switch(Usertype)
             {
                 case 1:
-                    while(currentNode != NULL)
+                    while(currentPizza != NULL)
                     {
                         cout << counter++ << ". "<< endl;
-                        currentNode->pizza.pizzaInfoCust();
-                        currentNode = currentNode->next;
+                        currentPizza->pizza.pizzaInfoCust();
+                        currentPizza = currentPizza->next;
                     }
                     break;
                 case 2:
-                    while(currentNode != NULL)
+                    while(currentPizza != NULL)
                     {
                         cout << counter++ << ". ";
-                        currentNode->pizza.pizzaInfoStaff();
-                        currentNode = currentNode->next;
+                        currentPizza->pizza.pizzaInfoStaff();
+                        currentPizza = currentPizza->next;
                     }
             }
+        }
+
+        PizzaNode *getHead() {
+            return head;
         }
 
         void addPizza()
@@ -398,7 +427,7 @@ class DoublyLLDrink
 
         void displayAllDrink(int Usertype)
         {
-            DrinkNode* currentNode = head;
+            DrinkNode* currentPizza = head;
             if(head == NULL)
             {
                 cout << "Currently No Drink Available!" << endl;
@@ -408,21 +437,25 @@ class DoublyLLDrink
             switch(Usertype)
             {
                 case 1:
-                    while(currentNode != NULL)
+                    while(currentPizza != NULL)
                     {
                         cout << counter++ << ". "<< endl;
-                        currentNode->drink.drinkInfoCust();
-                        currentNode = currentNode->next;
+                        currentPizza->drink.drinkInfoCust();
+                        currentPizza = currentPizza->next;
                     }
                     break;
                 case 2:
-                    while(currentNode != NULL)
+                    while(currentPizza != NULL)
                     {
                         cout << counter++ << ". ";
-                        currentNode->drink.drinkInfoStaff();
-                        currentNode = currentNode->next;
+                        currentPizza->drink.drinkInfoStaff();
+                        currentPizza = currentPizza->next;
                     }
             }
+        }
+
+        DrinkNode *getHead() {
+            return head;
         }
 
         void addDrink()
@@ -682,7 +715,7 @@ int viewMenu()
     
 }
 
-void addOrder()
+void addToCart()
 {
     string item;
 
@@ -708,10 +741,6 @@ void addOrder()
   //view cart = tunjuk
 }
 
-void manage_order()
-{
-
-}
 
 void view_cart()
 {
@@ -721,7 +750,6 @@ void view_cart()
 
 void customer_menu(int& custChoice)
 {
-    int custChoice;
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. View All Menu" << endl;
     cout << "2. View Order Status" << endl<< endl;
@@ -798,10 +826,19 @@ void StaffAuth(Staff arr[], int& found)
 }
 
 
-
 int main()
 {
     string choice;
+    char ch; //biar semua function boleh pakai
+
+     //Pizza Variables
+    DoublyLLPizza pizzaList;
+
+    //Drink Variables
+    DoublyLLDrink drinkList;
+
+    //Customer Variables
+    CustOrder cust;
 
     //Staff Variables
     Staff staffArray[3] = { Staff("A23CS0111", "Staff123"),
@@ -809,12 +846,6 @@ int main()
     int found = 0;
     int staffChoice, custChoice;
     int manage_choice;
-
-    //Pizza Variables
-    DoublyLLPizza pizzaList;
-
-    //Drink Variables
-    DoublyLLDrink drinkList;
 
     back:
     cout << "PIZZARIA RESTAURANT" << endl << endl;
@@ -871,7 +902,7 @@ int main()
 
             switch(manage_choice)
             {
-                char ch;
+    
                 case 1 :
                     do
                     {
@@ -972,19 +1003,113 @@ int main()
     }
 
     customer: 
-    customer_menu(custChoice); //add order dengan view cart
+    string itemName[MAX_SIZE];
+    double itemPrice[MAX_SIZE]; //array to store orders
 
-    /*switch(custChoice)
+    menu_display:
+    customer_menu(custChoice);
+
+    switch (custChoice)
     {
-        case 1: //ni untuk dua pilihan cust interface
-            ViewMenu:
-            switch(choice) //ni untuk add order dengan view cart
+    case 1:
 
-    }*/
+            do
+            {
+            int pizzaNo, drinkNo;
+            char size;
+
+            string itemName;
+            double itemPrice;
 
 
+            PizzaNode* currentPizza = pizzaList.getHead();
+            DrinkNode* currentDrink = drinkList.getHead();
+
+            if(currentPizza == NULL) 
+            {
+                system("cls");
+                cout << "Sorry! All menus are unavailable :(" << endl;
+                cout << "--COME AGAIN LATER--" << endl << endl;
+                goto back;
+            }
+
+            int currentIndex = 1;
+
+            pizzaList.displayAllPizza(1);
+            cout << "Enter No: ";
+            cin >> pizzaNo;
+            cout << "Enter Size(P/R/L): ";
+            size = getch();
+            cout << size;
+
+            while(currentIndex != pizzaNo)
+            {
+                currentPizza = currentPizza->next;
+                currentIndex++;
+            }
+
+            itemName = currentPizza->pizza.getPizzaName();
+
+            switch(toupper(size))
+            {
+                case 'P' :
+                    itemPrice = currentPizza->pizza.getPersonal();
+                    break;
+                case 'R' :
+                    itemPrice = currentPizza->pizza.getRegular();
+                    break;
+                case 'L' :
+                    itemPrice = currentPizza->pizza.getLarge();
+                    break;
+            }
+
+            cout << "Do you wish to add drinks?" << endl;
+            ch = getch();
+            cout << ch;
+
+            while(toupper(ch) == 'Y')
+            {
+                cout << "Do you wish to add drinks?" << endl;
+                ch = getch();
+                cout << ch;
+                drinkList.displayAllDrink(1);
+                cout << "Enter No: ";
+                cin >> drinkNo;
+
+                while(currentIndex != drinkNo)
+                {
+                    currentDrink = currentDrink->next;
+                    currentIndex++;
+                }
+
+                itemName = currentDrink->drink.getDrinkName();
+                itemPrice = currentDrink->drink.getDrinkPrice();
+            }
     
+
+            cust.addToCart(itemName, itemPrice);
+            cout << endl;
+            cust.viewCart();
+            cout << "Add More? (Y/N): ";
+                    ch = getch();
+                    cout << ch;
+            } while(toupper(ch) == 'Y');        
+            
+            goto menu_display;
+    break;
+
+    case 2:
+        system("cls");
+        cout << "No items added in the cart yet." << endl; //handle case kalau takde pizza
+
+        goto menu_display;
+    
+    default:
+        system("cls");
+        goto back;
+    }
+
 
 }
 
-//saya nak sync!!!!!!!!!!!!
+//saya nak sync!!

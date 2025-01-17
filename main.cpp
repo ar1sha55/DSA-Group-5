@@ -687,7 +687,26 @@ class QueueOrder
         }
 
         //display all order
-        void displayOrder(){}
+        void displayOrder()
+        {
+            if(isEmpty())
+            {
+                cout << "You have not submitted any order.\n\n";
+                return;
+            }
+
+            OrderNode *curr = front;
+
+            cout << "ORDERS: \n";
+
+            while(curr != nullptr)
+            {
+                curr->order.viewCart();
+
+                curr = curr->next;
+            }
+
+        }
 
 };
 

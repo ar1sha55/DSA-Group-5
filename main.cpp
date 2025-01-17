@@ -64,9 +64,10 @@ class CustOrder {
 
         void viewCart()
         {
+            cout << "Your cart right now: \n";
             for(int i=0; i<counter; i++)
             {
-                cout << i+1 << ". " << itemName[i] << "   " << itemPrice[i] << endl;
+                cout << i+1 << ". " << itemName[i] << "  RM" << itemPrice[i] << endl;
             }
         }
        
@@ -124,6 +125,7 @@ class Pizza
         int getPersonal() {return price_personal;}
         int getRegular() {return price_reg;}
         int getLarge() {return price_large;}
+
         void pizzaInfoCust()
         {
             cout << pizzaName << " RM " << price_personal << " RM " << price_reg << " RM " << price_large << endl;
@@ -173,9 +175,10 @@ class DoublyLLPizza
             switch(Usertype)
             {
                 case 1:
+                    cout << "Pizza available for today: \n\n";
                     while(currentPizza != NULL)
                     {
-                        cout << counter++ << ". "<< endl;
+                        cout << "[" << counter++ << "] ";
                         currentPizza->pizza.pizzaInfoCust();
                         currentPizza = currentPizza->next;
                     }
@@ -437,9 +440,10 @@ class DoublyLLDrink
             switch(Usertype)
             {
                 case 1:
+                    cout << "Drinks available for today: \n\n";
                     while(currentPizza != NULL)
                     {
-                        cout << counter++ << ". "<< endl;
+                        cout << "[" << counter++ << "] ";
                         currentPizza->drink.drinkInfoCust();
                         currentPizza = currentPizza->next;
                     }
@@ -738,11 +742,15 @@ void addToCart()
 {
     string item;
 
+    //tunjuk list menu
+    DoublyLLPizza pizza;
+    DoublyLLDrink drink;
+    pizza.displayAllPizza(1);
+    drink.displayAllDrink(1);
+
     cout << "Insert the name of the ITEM ID you want to add.\n";
     cout << "ITEM ID => [   ]\b\b";
     cin >> item;
-
-    //tunjuk list menu
 
     //tanya a la carte ke set
     /*a la carte
@@ -1028,6 +1036,8 @@ int main()
     menu_display:
     customer_menu(custChoice);
 
+    system("cls");
+
     switch (custChoice)
     {
     case 1:
@@ -1055,7 +1065,7 @@ int main()
             int currentIndex = 1;
 
             pizzaList.displayAllPizza(1);
-            cout << "Enter No: ";
+            cout << "\nEnter no. pizza you want: ";
             cin >> pizzaNo;
             cout << "Enter Size(P/R/L): ";
             size = getch();
@@ -1084,13 +1094,16 @@ int main()
 
             cust.addToCart(itemName, itemPrice);
 
-            do
-            {
-                cout << "\nDo you wish to add drinks?" << endl;
+
+                system("cls");
+                cout << "\nDo you wish to add drinks? (Y/N)" << endl;
                 ch = getch();
                 cout << ch;
+
+                system("cls");
+
                 drinkList.displayAllDrink(1);
-                cout << "Enter No: ";
+                cout << "\nEnter no. of drinks you want: ";
                 cin >> drinkNo;
 
                 while(currentIndex != drinkNo)
@@ -1101,15 +1114,19 @@ int main()
 
                 itemName = currentDrink->drink.getDrinkName();
                 itemPrice = currentDrink->drink.getDrinkPrice();
+
                 cust.addToCart(itemName, itemPrice);
-            } while(toupper(ch) == 'Y');
-    
+
+            system("cls");
+
+            cust.viewCart();
 
             cout << endl;
-            cust.viewCart();
+
             cout << "Add More? (Y/N): ";
                     ch = getch();
                     cout << ch << endl;
+                    system ("cls");
             } while(toupper(ch) == 'Y');        
             
             goto menu_display;
@@ -1125,6 +1142,7 @@ int main()
         system("cls");
         goto back;
     }
+
 
 
 }

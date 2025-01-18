@@ -714,8 +714,8 @@ class QueueOrder
 
         }
 
-        OrderNode *getFront() {
-            return front;
+        OrderNode *getBack() {
+            return back;
         }
 
 
@@ -1145,7 +1145,7 @@ int main()
             cout << "Here is your cart." << endl;
             cust.viewCart();
 
-            if(order.getFront() == NULL) 
+            if(order.getBack() == NULL) 
             {
                 cout << "Delivered! Enjoy Da Mealz." << endl; //takda order dalam queue, staff dah dequeue
             } else {

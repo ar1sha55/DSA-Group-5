@@ -2,6 +2,7 @@
 #include <string>
 #include <conio.h>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -34,6 +35,7 @@ class CustOrder {
         
 
     public:
+        vector<string> items;
         CustOrder(){};
         CustOrder(string cust, string contact, string order)
         {
@@ -64,6 +66,7 @@ class CustOrder {
 
         void viewCart()
         {
+            cout << "Your cart right now: \n";
             for(int i=0; i<counter; i++)
             {
                 cout << i+1 << ". " << itemName[i] << "  RM" << itemPrice[i] << endl;
@@ -680,16 +683,12 @@ class QueueOrder
         {
             OrderNode *curr = front;
 
-            cout << "\nOrder for " << curr->order.; //kena buat function untuk get item ordered
-
             front = curr->next;
             curr->next = NULL;
             delete curr;
 
             if(!front) 
             back = NULL;
-
-
             
         }
 
@@ -715,7 +714,66 @@ class QueueOrder
 
         }
 
+        OrderNode *getFront() {
+            return front;
+        }
+
+
 };
+
+int viewMenu()
+{
+    DoublyLLDrink drink;
+    DoublyLLPizza pizza;
+
+    int x = 1;
+    int y;
+
+    cout << "MENU FOR TODAY:\nDRINKS:";
+    drink.displayAllDrink(x);
+
+    cout << "MENU FOR TODAY:\nPIZZA:";
+    pizza.displayAllPizza(x);
+
+    cout << "1. Add Order" << endl;
+    cout << "2. View Cart" << endl;
+
+    cout << "Enter choice: \n[ ]\b\b";
+    cin >> y;
+
+    return y;
+    
+}
+
+void addToCart()
+{
+    string item;
+
+    //tunjuk list menu
+    DoublyLLPizza pizza;
+    DoublyLLDrink drink;
+    pizza.displayAllPizza(1);
+    drink.displayAllDrink(1);
+
+    cout << "Insert the name of the ITEM ID you want to add.\n";
+    cout << "ITEM ID => [   ]\b\b";
+    cin >> item;
+
+    //tanya a la carte ke set
+    /*a la carte
+    nampak pizza
+    drink optional
+    */
+
+   /*combo
+   pizza
+   drink mandatory
+   */
+
+  //tanya nak add lagi tak, kalu add tunjuk balik 
+
+  //view cart = tunjuk
+}
 
 
 void customer_menu(int& custChoice)
@@ -798,9 +856,6 @@ void StaffAuth(Staff arr[], int& found)
 
 int main()
 {
-
-    QueueOrder order;
-
     string choice;
     char ch; //biar semua function boleh pakai
 
@@ -812,6 +867,9 @@ int main()
 
     //Customer Variables
     CustOrder cust;
+
+    //Order Variables
+    QueueOrder order;
 
     //Staff Variables
     Staff staffArray[3] = { Staff("A23CS0111", "Staff123"),
@@ -969,21 +1027,6 @@ int main()
                     break; 
             }
 
-        case 2:
-        {
-            manage_order_status:
-
-            order.displayOrder();
-
-            cout << "Is the latest order done? (Y/N)\n";
-            ch = getch();
-            cout << ch;
-
-            order.dequeue();
-
-
-        }
-
         default : 
             system("cls");
             goto back;
@@ -993,11 +1036,6 @@ int main()
     customer: 
     string itemName[MAX_SIZE];
     double itemPrice[MAX_SIZE]; //array to store orders
-
-    cust.setCustName();
-    cust.setContactNumber();
-
-    system("cls");
 
     menu_display:
     customer_menu(custChoice);
@@ -1059,18 +1097,16 @@ int main()
             }
 
             cust.addToCart(itemName, itemPrice);
+            cust.items.push_back(itemName);
 
 
+                system("cls");
+                cout << "\nDo you wish to add drinks? (Y/N)" << endl;
+                ch = getch();
+                cout << ch;
 
-            system("cls");
-            cout << "\nDo you wish to add drinks? (Y/N)" << endl;
-            ch = getch();
-            cout << ch;
+                system("cls");
 
-            system("cls");
-
-            if (toupper(ch) == 'Y')
-            {
                 drinkList.displayAllDrink(1);
                 cout << "\nEnter no. of drinks you want: ";
                 cin >> drinkNo;
@@ -1085,8 +1121,7 @@ int main()
                 itemPrice = currentDrink->drink.getDrinkPrice();
 
                 cust.addToCart(itemName, itemPrice);
-
-            }
+                order.enqueue(cust);
 
             system("cls");
 
@@ -1098,40 +1133,30 @@ int main()
                     ch = getch();
                     cout << ch << endl;
                     system ("cls");
-
             } while(toupper(ch) == 'Y');        
             
-            cout << "Submit your order? (Y/N)\n";
-            ch = getch();
-            cout << ch << endl;
-
-            system("cls");
-
-            if(toupper(ch) == 'Y')
-            {
-                order.enqueue(cust);
-            }
-
-    goto menu_display;
+            goto menu_display;
     break;
 
     case 2:
-        system("cls");
 
-        if(order.isEmpty())
+        if(pizzaList.getHead() != NULL) 
         {
-        cout << "No items added in the cart yet." << endl; //handle case kalau takde pizza
+            cout << "Here is your cart." << endl;
+            cust.viewCart();
+
+            if(order.getFront() == NULL) 
+            {
+                cout << "Delivered! Enjoy Da Mealz." << endl; //takda order dalam queue, staff dah dequeue
+            } else {
+                cout << "Cooking NYUM NYUM." << endl;//order still in queue
+            }
+
+        } else {
+            cout << "No items added in the cart yet." << endl; 
         }
+        //system("cls");
 
-        else
-        {
-            cout << "Order Status: \n\n";
-            order.displayOrder();
-        }
-
-        cout << "\n\n";
-
-        system("pause");
         goto menu_display;
     
     default:

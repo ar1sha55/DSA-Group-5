@@ -3,10 +3,13 @@
 #include <conio.h>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
 const int MAX_SIZE = 100;
+
+
 
 class Staff
 {
@@ -27,34 +30,52 @@ class CustOrder {
     
     private:
         string custName, contactNum, orderStatus;
-        int orderID;
+        string orderID;
         int counter = 0;
 
         string itemName[MAX_SIZE];
         int itemPrice[MAX_SIZE];
         
-
     public:
         vector<string> items;
-        CustOrder(){};
-        CustOrder(string cust, string contact, string order)
+        CustOrder(string cust ="", string contact ="", string order ="Preparing", string o = "")
         {
             custName = cust;
             contactNum = contact;
             orderStatus = order;
+            orderID = o;
         }
         string getCustName(){return custName;}
         string getContactNum(){return contactNum;}
         string getOrderStatus(){return orderStatus;}
+        string getOrderID(){return orderID;}
 
         void setCustName() {
-            cout << "Enter customer name: ";
+            cout << "Enter Name: ";
             getline(cin, custName);
         }
 
         void setContactNumber() {
-            cout << "Enter customer number: ";
-            getline(cin, custName);
+            cout << "Enter Phone Number: ";
+            getline(cin, contactNum);
+        }
+
+        void setOrderID(int o)
+        {
+            string ID = "OID";
+            ID = ID + to_string(o);
+            orderID = ID;
+        }
+
+        void setOrderStatus()
+        {
+            string status;
+            cout << "Current Status: " << orderStatus << endl;
+            cout << "New Status: ";
+            getline(cin, status);
+            orderStatus = status;
+            cout << "\n\nStatus Has Been Changed!" << endl;
+            system("pause");
         }
 
         void addToCart(string n, double p)
@@ -64,15 +85,27 @@ class CustOrder {
             counter++;
         }
 
-        void viewCart()
+        void viewOrder()
         {
-            cout << "Your cart right now: \n";
             for(int i=0; i<counter; i++)
             {
-                cout << i+1 << ". " << itemName[i] << "  RM" << itemPrice[i] << endl;
+                cout << left;
+                cout << i+1 << setw(2) << "." << setw(15) << itemName[i] << "RM " << itemPrice[i] << endl;
             }
         }
-       
+
+        double receiptOrder()
+        {
+            double totalPrice = 0;
+            for(int i=0; i<counter; i++)
+            {
+                cout << left;
+                cout << i+1 << setw(2) << "." << setw(15) << itemName[i] << "RM " << itemPrice[i] << endl;
+
+                totalPrice += itemPrice[i];
+            }
+            return totalPrice;
+        }
 
 };
 
@@ -130,11 +163,13 @@ class Pizza
 
         void pizzaInfoCust()
         {
-            cout << pizzaName << " RM " << price_personal << " RM " << price_reg << " RM " << price_large << endl;
+            cout << left;
+            cout << setw(15) << pizzaName << "RM " << setw(8) << price_personal << "RM " << setw(8) << price_reg << "RM " << price_large << endl;
         }
         void pizzaInfoStaff()
         {
-            cout << pizzaID << " " << pizzaName << " RM " << price_personal << " RM " << price_reg << " RM " << price_large << endl;
+            cout << left;
+            cout << setw(10) << pizzaID << setw(15) << pizzaName << "RM " << setw(8) << price_personal << "RM " << setw(8) << price_reg << "RM " << price_large << endl;
         }
         
         
@@ -171,13 +206,16 @@ class DoublyLLPizza
             if(head == NULL)
             {
                 cout << "Currently No Pizza Available!" << endl;
+                return;
             }
 
             int counter = 1;
             switch(Usertype)
             {
                 case 1:
-                    cout << "Pizza available for today: \n\n";
+                    cout << "PIZZA" << endl;
+                    cout << left;
+                    cout << setw(4) << " " << setw(15) << "Name" << setw(11) << "Personal" << setw(11) << "Regular" << "Large" << endl;
                     while(currentPizza != NULL)
                     {
                         cout << "[" << counter++ << "] ";
@@ -186,6 +224,8 @@ class DoublyLLPizza
                     }
                     break;
                 case 2:
+                    cout << left;
+                    cout << setw(3) << " " << setw(10) << "PizzaID" << setw(15) << "Name" << setw(11) << "Personal" << setw(11) << "Regular" << "Large" << endl;
                     while(currentPizza != NULL)
                     {
                         cout << counter++ << ". ";
@@ -291,6 +331,8 @@ class DoublyLLPizza
             }
 
             delete delNode;
+            cout << endl;
+            cout << "Pizza Deleted!" << endl;
         }
 
         void modifyPizza()
@@ -328,7 +370,6 @@ class DoublyLLPizza
             ch = getch();
             cout << ch;
             cin.ignore();
-
 
             if(toupper(ch) == 'Y')
             {
@@ -397,12 +438,14 @@ class Drink
         double getDrinkPrice(){return price;}
         void drinkInfoCust()
         {
-            cout << drinkName << " RM " << price << endl;
+            cout << left;
+            cout << setw(15) <<  drinkName << "RM " << price << endl;
         }
 
         void drinkInfoStaff()
         {
-            cout << drinkID << " " <<  drinkName << " RM " << price << endl;
+            cout << left;
+            cout << setw(10) << drinkID << setw(15) <<  drinkName << "RM " << price << endl;
         }
 };
 
@@ -436,13 +479,16 @@ class DoublyLLDrink
             if(head == NULL)
             {
                 cout << "Currently No Drink Available!" << endl;
+                return;
             }
 
             int counter = 1;
             switch(Usertype)
             {
                 case 1:
-                    cout << "Drinks available for today: \n\n";
+                    cout << left;
+                    cout << "DRINKS" << endl;
+                    cout << setw(4) << " " << setw(15) << "Name" << "Price" << endl;
                     while(currentPizza != NULL)
                     {
                         cout << "[" << counter++ << "] ";
@@ -451,6 +497,8 @@ class DoublyLLDrink
                     }
                     break;
                 case 2:
+                    cout << left;
+                    cout << setw(3) << " " << setw(10) << "DrinkID" << setw(15) << "Name" << "Price" << endl;
                     while(currentPizza != NULL)
                     {
                         cout << counter++ << ". ";
@@ -550,6 +598,8 @@ class DoublyLLDrink
             }
 
             delete delNode;
+            cout << endl;
+            cout << "Drink Deleted!" << endl;
         }
 
         void modifyDrink()
@@ -617,17 +667,16 @@ class DoublyLLDrink
         }
 };
 
-
 class OrderNode
 {
     public:
         CustOrder order;
         OrderNode* next;
-        OrderNode(){}
+        OrderNode(){};
         OrderNode(CustOrder o)
         {
             order = o;
-            next = nullptr;
+            next = NULL;
         }
 };
 
@@ -636,36 +685,26 @@ class QueueOrder
     private:
         OrderNode* front;
         OrderNode* back;
-
+        int orderID = 1;
     public:
-        QueueOrder() {front = nullptr; back = nullptr;}
-
-      
-        //delete all order
-        void deleteAll()
-        {
-            OrderNode* curr = front;
-            
-            while(curr)
-            {
-                front = curr->next;
-                delete curr;
-                curr = front;
-            }
-
-            cout << "== ALL ORDERS HAVE BEEN DELETED ==\n\n";
-        }
+        QueueOrder() {front = NULL; back = NULL;}
 
         //check if queue empty
         bool isEmpty()
         {
-            return (back == nullptr && front == nullptr);
+            return (back == NULL && front == NULL);
         }
 
         //add order to queue
         void enqueue(CustOrder x)
         {
-            OrderNode* newOrder = new OrderNode(x);
+            CustOrder newCust;
+            cin.ignore();
+            newCust.setCustName();
+            newCust.setContactNumber();
+
+            OrderNode* newOrder = new OrderNode(newCust);
+            newOrder->order.setOrderID(orderID++);
 
             if(isEmpty())
             {
@@ -675,6 +714,7 @@ class QueueOrder
             {
                 back->next = newOrder;
                 back = newOrder;
+                back->next = NULL;
             }
         }
 
@@ -683,98 +723,46 @@ class QueueOrder
         {
             OrderNode *curr = front;
 
-            front = curr->next;
-            curr->next = NULL;
+            if(curr->next == NULL)
+            {
+                front = back = NULL;
+            }
+            else
+                front = curr->next;
+
+            cout << curr->order.getOrderID() << " Removed from Queue!" << endl;
             delete curr;
 
             if(!front) 
-            back = NULL;
+                back = NULL;
             
         }
 
         //display all order
-        void displayOrder()
+        int displayOrder()
         {
             if(isEmpty())
             {
-                cout << "You have not submitted any order.\n\n";
-                return;
+                cout << "No Order Currently Available!" << endl << endl;
+                return 0;
             }
 
             OrderNode *curr = front;
 
-            cout << "ORDERS: \n";
-
+            cout << "ORDERS"<< endl << endl;
+            cout << left;
+            cout << setw(20) << "Customer Name" << setw(15) << "OrderID" << "Status" << endl;
             while(curr != nullptr)
             {
-                curr->order.viewCart();
-
+                cout << setw(20) << curr->order.getCustName() << setw(15) << curr->order.getOrderID() << curr->order.getOrderStatus() << endl;
                 curr = curr->next;
             }
-
+            return 1;
         }
 
-        OrderNode *getBack() {
-            return back;
-        }
-
-
+        OrderNode *getBack() {return back;}
+        OrderNode *getFront() {return front;}
 };
-
-int viewMenu()
-{
-    DoublyLLDrink drink;
-    DoublyLLPizza pizza;
-
-    int x = 1;
-    int y;
-
-    cout << "MENU FOR TODAY:\nDRINKS:";
-    drink.displayAllDrink(x);
-
-    cout << "MENU FOR TODAY:\nPIZZA:";
-    pizza.displayAllPizza(x);
-
-    cout << "1. Add Order" << endl;
-    cout << "2. View Cart" << endl;
-
-    cout << "Enter choice: \n[ ]\b\b";
-    cin >> y;
-
-    return y;
-    
-}
-
-void addToCart()
-{
-    string item;
-
-    //tunjuk list menu
-    DoublyLLPizza pizza;
-    DoublyLLDrink drink;
-    pizza.displayAllPizza(1);
-    drink.displayAllDrink(1);
-
-    cout << "Insert the name of the ITEM ID you want to add.\n";
-    cout << "ITEM ID => [   ]\b\b";
-    cin >> item;
-
-    //tanya a la carte ke set
-    /*a la carte
-    nampak pizza
-    drink optional
-    */
-
-   /*combo
-   pizza
-   drink mandatory
-   */
-
-  //tanya nak add lagi tak, kalu add tunjuk balik 
-
-  //view cart = tunjuk
-}
-
 
 void customer_menu(int& custChoice)
 {
@@ -782,7 +770,7 @@ void customer_menu(int& custChoice)
     cout << "1. View All Menu" << endl;
     cout << "2. View Order Status" << endl<< endl;
 
-    cout << "Enter choice: ";
+    cout << "Enter choice (Press 0 to back): ";
     cin >> custChoice;
 }
 
@@ -790,8 +778,8 @@ void staff_menu(int& staffChoice)
 {
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. Manage Menu" << endl;
-    cout << "2. Manage Order Status" << endl;
-    cout << "3. View All Order" << endl;
+    cout << "2. Manage Order" << endl;
+    cout << "3. View All Running Order" << endl;
     cout << "4. Monthly Report" << endl << endl;
 
     cout << "Enter choice (Press 0 to back): ";
@@ -816,7 +804,7 @@ int manage_menu()
     return manage_choice;
 }
 
-void StaffAuth(Staff arr[], int& found)
+int StaffAuth(Staff arr[], int found)
 {
     string staffID, password;
     int ch;
@@ -849,10 +837,27 @@ void StaffAuth(Staff arr[], int& found)
     for(int i=0; i<3; i++)
     {
         if(arr[i].getStaffID() == staffID && arr[i].getStaffPassword() == password)
-            found = 1;
+            return found = 1;
     }
+    return 0;
 }
 
+void dispTri() 
+{
+    // Print the top part of all 6 triangles side by side
+    cout << " \\    /  \\    /  \\    /  \\    /  \\    /  \\    /";
+
+    // Print the middle part of all 6 triangles side by side
+    cout << "\n  \\  /    \\  /    \\  /    \\  /    \\  /    \\  /";
+
+    // Print the bottom part of all 6 triangles side by side
+    cout << "\n   \\/      \\/      \\/      \\/      \\/      \\/";
+}
+
+void dispLine() 
+{
+    cout << "------------------------------------------------" << endl;
+}
 
 int main()
 {
@@ -865,18 +870,19 @@ int main()
     //Drink Variables
     DoublyLLDrink drinkList;
 
-    //Customer Variables
-    CustOrder cust;
-
     //Order Variables
     QueueOrder order;
 
+    //Customer Variables
+    CustOrder cust;
+
     //Staff Variables
-    Staff staffArray[3] = { Staff("A23CS0111", "Staff123"),
+    Staff staffArray[2] = { Staff("A23CS0111", "Staff123"),
                             Staff("A23CS0154", "Staff123")};
     int found = 0;
     int staffChoice, custChoice;
     int manage_choice;
+    string custOID, newStatus;
 
     back:
     cout << "PIZZARIA RESTAURANT" << endl << endl;
@@ -904,9 +910,8 @@ int main()
         goto back;
     }
 
-
     staff:
-    StaffAuth(staffArray, found);
+    found = StaffAuth(staffArray, found);
     
     if(!found)
     {
@@ -933,7 +938,6 @@ int main()
 
             switch(manage_choice)
             {
-    
                 case 1 :
                     do
                     {
@@ -949,8 +953,7 @@ int main()
                         
                         cout << endl;
                         cout << "Add More? (Y/N): ";
-                        ch = getch();
-                        cout << ch;
+                        cin >> ch;
                     } while(toupper(ch) == 'Y');
 
                     cout << endl;
@@ -973,8 +976,7 @@ int main()
                         
                         cout << endl;
                         cout << "Add More? (Y/N): ";
-                        ch = getch();
-                        cout << ch;
+                        cin >> ch;
                     } while(toupper(ch) == 'Y');
 
                     cout << endl;
@@ -1026,145 +1028,339 @@ int main()
                     goto staffMenu; 
                     break; 
             }
-
-        default : 
-            system("cls");
-            goto back;
-            
-    }
-
-    customer: 
-    string itemName[MAX_SIZE];
-    double itemPrice[MAX_SIZE]; //array to store orders
-
-    menu_display:
-    customer_menu(custChoice);
-
-    system("cls");
-
-    switch (custChoice)
-    {
-    case 1:
+        
+        case 2: 
+        {
+            OrderNode* currentNode = order.getFront();
+            int exit;
 
             do
             {
-            int pizzaNo, drinkNo;
-            char size;
-
-            string itemName;
-            double itemPrice;
-
-
-            PizzaNode* currentPizza = pizzaList.getHead();
-            DrinkNode* currentDrink = drinkList.getHead();
-
-            if(currentPizza == NULL) 
-            {
                 system("cls");
-                cout << "Sorry! All menus are unavailable :(" << endl;
-                cout << "--COME AGAIN LATER--" << endl << endl;
-                goto back;
-            }
+                cin.ignore();
+                exit = order.displayOrder();
+                cout << endl;
+                cout << "Enter OrderID (Press 0 to back): ";
+                getline(cin,custOID);
 
-            int currentIndex = 1;
-
-            pizzaList.displayAllPizza(1);
-            cout << "\nEnter no. pizza you want: ";
-            cin >> pizzaNo;
-            cout << "Enter Size(P/R/L): ";
-            size = getch();
-            cout << size;
-
-            while(currentIndex != pizzaNo)
-            {
-                currentPizza = currentPizza->next;
-                currentIndex++;
-            }
-
-            itemName = currentPizza->pizza.getPizzaName();
-
-            switch(toupper(size))
-            {
-                case 'P' :
-                    itemPrice = currentPizza->pizza.getPersonal();
+                if(custOID == "0" || exit == 0)
                     break;
-                case 'R' :
-                    itemPrice = currentPizza->pizza.getRegular();
-                    break;
-                case 'L' :
-                    itemPrice = currentPizza->pizza.getLarge();
-                    break;
-            }
-
-            cust.addToCart(itemName, itemPrice);
-            cust.items.push_back(itemName);
 
 
-                system("cls");
-                cout << "\nDo you wish to add drinks? (Y/N)" << endl;
-                ch = getch();
-                cout << ch;
-
-                system("cls");
-
-                drinkList.displayAllDrink(1);
-                cout << "\nEnter no. of drinks you want: ";
-                cin >> drinkNo;
-
-                while(currentIndex != drinkNo)
+                while(currentNode->order.getOrderID() != custOID)
                 {
-                    currentDrink = currentDrink->next;
-                    currentIndex++;
+                    currentNode = currentNode->next;
                 }
 
-                itemName = currentDrink->drink.getDrinkName();
-                itemPrice = currentDrink->drink.getDrinkPrice();
+                system("cls");
+                if(currentNode != NULL)
+                {
+                    cout << "Item Ordered" << endl;
+                    currentNode->order.viewOrder();
+                    currentNode->order.setOrderStatus();
+                }
+                else
+                {
+                    cout << "Invalid Input!";
+                    system("pause");
+                }
 
-                cust.addToCart(itemName, itemPrice);
-                order.enqueue(cust);
+            } while(currentNode == NULL);
 
             system("cls");
 
-            cust.viewCart();
-
-            cout << endl;
-
-            cout << "Add More? (Y/N): ";
-                    ch = getch();
-                    cout << ch << endl;
-                    system ("cls");
-            } while(toupper(ch) == 'Y');        
-            
-            goto menu_display;
-    break;
-
-    case 2:
-
-        if(pizzaList.getHead() != NULL) 
-        {
-            cout << "Here is your cart." << endl;
-            cust.viewCart();
-
-            if(order.getBack() == NULL) 
+            //check if front order dah "Delivered", then system akan dequeue 
+            if((order.getFront() != NULL) && order.getFront()->order.getOrderStatus() == "Delivered")
             {
-                cout << "Delivered! Enjoy Da Mealz." << endl; //takda order dalam queue, staff dah dequeue
-            } else {
-                cout << "Cooking NYUM NYUM." << endl;//order still in queue
+                //letak delivered order dekat dalam file dulu before dequeue so history tu ada
+                ofstream outFile("OrderHistory.txt", ios::app); // Open in append mode
+                if (outFile.is_open()) {
+                    outFile << left << setw(20) << currentNode->order.getCustName() // Customer name
+                            << setw(15) << currentNode->order.getOrderID()  // Order ID
+                             << setw(15) << currentNode->order.getOrderStatus() 
+                             << endl; // Order status
+                    outFile.close();
+                    cout << "Order details saved to file." << endl;
+                } else {
+                    cerr << "Error: Could not open file to save order details." << endl;
+                }
+                //lepas dah letak dalam file, baru dequeue
+                order.dequeue();
             }
 
-        } else {
-            cout << "No items added in the cart yet." << endl; 
+            goto staffMenu;
+            break;
         }
-        //system("cls");
 
+        case 3 :
+        {
+            order.displayOrder();
+            cout << endl;
+            system("pause");
+            goto staffMenu;
+        }
+        //buat reporting kat sini. read from file tunjuk semua info pasal order itu
+        case 4 : 
+        {
+            ifstream inFile("OrderHistory.txt", ios::in);
+            if(inFile.is_open()) 
+            {
+                string line;
+                dispLine();
+                cout << "\t\tMONTHLY ORDER REPORT" << endl;
+                dispLine();
+                cout << left << setw(20) << "Customer Name" << setw(15) << "OrderID" << setw(15) << "Status" << endl;
+                while(getline(inFile, line)) 
+                {
+                    cout << line << endl;
+                }
+
+                dispLine();
+
+                inFile.close();
+            } else {
+                cerr << "File failed to open. Unable to generate report" << endl;
+            }
+            system("pause");
+            goto staffMenu;
+        }
+        
+        default : 
+            system("cls");
+            goto back;       
+    }
+
+    customer: 
+    system("cls");
+    string itemName[MAX_SIZE];
+    double itemPrice[MAX_SIZE]; //array to store orders
+    string input;
+
+    cout << "PIZZARIA RESTAURANT" << endl << endl;
+    cout << "1. Make Order" << endl;
+    cout << "2. View Existing Order" << endl << endl;
+    cout << "Enter choice (Press 0 to back): ";
+    cin >> input;
+
+    if(input == "1")
+    {
+        system("cls");
+        cout << "PIZZARIA RESTAURANT" << endl << endl;
+        cout << "1. Buy in Ala-Carte" << endl;
+        cout << "2. Buy in Combo" << endl << endl;
+        cout << "Enter choice: ";
+        cin >> input;
         goto menu_display;
-    
-    default:
+    }
+    else if(input == "2")
+    {
+        system("cls");
+        cin.ignore();
+
+        cout << "Enter OrderID: ";
+        getline(cin, input);
+
+        if(!order.isEmpty())
+        {
+            cout << endl;
+            OrderNode *currentNode = order.getFront();
+            while(currentNode->order.getOrderID() != input)
+            {
+                currentNode = currentNode->next; 
+            }
+
+            system("cls");
+            if(currentNode != NULL)
+            {
+                cout << "Item Ordered" << endl;
+                currentNode->order.viewOrder();
+                cout << endl;
+                cout << "Status: " << currentNode->order.getOrderStatus() << endl << endl;;
+
+                system("pause");
+            }
+            else
+            {
+                cout << "OrderID not Found :(" << endl;
+                system("pause");
+            }
+            goto customer;
+        }
+        else
+        {
+            cout << "OrderID not Found :(" << endl;
+            system("pause");
+            goto customer;
+        }
+    }
+    else
+    {
         system("cls");
         goto back;
     }
+    
+    menu_display:
 
+    PizzaNode* currentPizza = pizzaList.getHead();
+    DrinkNode* currentDrink = drinkList.getHead();
 
+    if(currentPizza == NULL) 
+    {
+        system("cls");
+        cout << "Sorry! All menus are unavailable :(" << endl;
+        cout << "--COME AGAIN LATER--" << endl << endl;
+        system("pause");
+        goto customer;
+    }
+
+    system("cls");
+    cout << "PIZZARIA RESTAURANT" << endl << endl;
+    order.enqueue(cust);
+    system("cls");
+
+    OrderNode* newOrder = order.getBack();
+    do
+    {
+        int currentIndex = 1;
+        int pizzaNo, drinkNo;
+        char size;
+
+        string itemName;
+        double itemPrice;
+
+        pizzaList.displayAllPizza(1);
+        cout << "\nSelect Pizza You Want (Enter Pizza No.): ";
+        cin >> pizzaNo;
+        cout << "Enter Size (P/R/L): ";
+        cin >> size;
+
+        while(currentIndex != pizzaNo)
+        {
+            currentPizza = currentPizza->next;
+            currentIndex++;
+        }
+
+        itemName = currentPizza->pizza.getPizzaName();
+
+        switch(toupper(size))
+        {
+            case 'P' :
+                itemPrice = currentPizza->pizza.getPersonal();
+                break;
+            case 'R' :
+                itemPrice = currentPizza->pizza.getRegular();
+                break;
+            case 'L' :
+                itemPrice = currentPizza->pizza.getLarge();
+                break;
+        }
+
+        newOrder->order.addToCart(itemName, itemPrice);
+        newOrder->order.items.push_back(itemName);
+
+        system("cls");
+        if(input == "2")
+        {
+            system("cls");
+            drinkList.displayAllDrink(1);
+            cout << "\nSelect Drink You Want (Enter Drink No.): ";
+            cin >> drinkNo;
+
+            while(currentIndex != drinkNo)
+            {
+                currentDrink = currentDrink->next;
+                currentIndex++;
+            }
+
+            itemName = currentDrink->drink.getDrinkName();
+            itemPrice = currentDrink->drink.getDrinkPrice();
+
+            newOrder->order.addToCart(itemName, itemPrice);
+        }
+
+        system("cls");
+        cout << "Your Cart Currently: " << endl;
+        newOrder->order.viewOrder();
+
+        cout << "\nAdd More? (Y/N): ";
+        cin >> ch;
+        system ("cls");
+
+    }while(toupper(ch) == 'Y');
+
+    dispLine();
+    cout << "|\t\tPIZZARIA RECEIPT\t\t|" << endl;
+    dispLine();
+
+    cout << left << setw(10) << "Name:" << newOrder->order.getCustName() << endl;
+    cout << left << setw(10) << "OrderID:" << newOrder->order.getOrderID() << endl;
+
+    dispLine();
+    cout << "Items Ordered:" << endl;
+    
+    dispLine();
+
+    double totalPrice;
+
+    totalPrice = newOrder->order.receiptOrder(); 
+    dispLine();
+
+    if (input == "2")
+    {
+        totalPrice = totalPrice * 0.7;
+    }
+
+    ofstream outFile("OrderHistory.txt", ios::app);
+    if (outFile.is_open())
+    {
+        outFile << fixed << setprecision(2) << totalPrice << endl;
+        outFile.close();
+    }
+    else
+    {
+        cerr << "Error.\n";
+    }
+
+    cout << fixed << setprecision(2) << "Total Price:      RM " << totalPrice ;
+
+    if(input == "2")
+    {
+        cout << " (Combo Discount)" << endl;
+    }
+    else
+    {
+        cout << endl;
+    }
+
+    dispLine();
+
+    cout << left << setw(20) << "Order Status:" << newOrder->order.getOrderStatus() << endl;
+
+    dispLine();
+    cout << "|\tThank You for Ordering at Pizzaria!\t|" << endl;
+    dispLine();
+    dispTri();
+    cout << endl;
+    system("pause");
+    
+    // Task 1
+    // simpan semua data customer dalam file untuk guna dekat report
+    // start simpan data dekat line 1043
+    // start reporting dekat line 1058
+
+    // Task 2
+    // buat satu receipt yang tunjuk semua makanan and harga, cust name, phone no, order id, order status
+    // kalau combo dapat discount sikit
+    // kalau tak combo, harga normal
+    // start dekat line 1225
+
+    // contoh boleh guna ni dalam receipt
+    // cout << endl;
+    // cout << "Name: " << newOrder->order.getCustName() << endl;
+    // cout << "OrderID: " << newOrder->order.getOrderID() << endl;
+    // cout << "Order Status: " << newOrder->order.getOrderStatus() << endl;
+    
+    goto customer;
+
+    return 0;
 }
-
-//saya nak sync!!

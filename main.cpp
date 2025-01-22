@@ -94,7 +94,7 @@ class CustOrder {
             }
         }
 
-        double receiptOrder()
+        double receiptOrder(string &input)
         {
             double totalPrice = 0;
             for(int i=0; i<counter; i++)
@@ -103,6 +103,11 @@ class CustOrder {
                 cout << i+1 << setw(2) << "." << setw(15) << itemName[i] << "RM " << itemPrice[i] << endl;
 
                 totalPrice += itemPrice[i];
+            }
+
+            if(input == "2")
+            {
+                totalPrice = totalPrice * 0.7;
             }
             return totalPrice;
         }
@@ -883,6 +888,7 @@ int main()
     int staffChoice, custChoice;
     int manage_choice;
     string custOID, newStatus;
+    string input; //supposedly at customer but kena declare awal
 
     back:
     cout << "PIZZARIA RESTAURANT" << endl << endl;
@@ -1075,11 +1081,12 @@ int main()
                 //letak delivered order dekat dalam file dulu before dequeue so history tu ada
                 ofstream outFile("OrderHistory.txt", ios::app); // Open in append mode
                 if (outFile.is_open()) {
-                    outFile << left << setw(20) << currentNode->order.getCustName() // Customer name
-                            << setw(15) << currentNode->order.getOrderID()  // Order ID
+                    outFile << left << setw(15) << currentNode->order.getCustName() // Customer name
+                            << setw(10) << currentNode->order.getOrderID()  // Order ID
+                            << setw(15) << currentNode->order.receiptOrder(input) //totalPrice
                              << setw(15) << currentNode->order.getOrderStatus() 
                              << endl; // Order status
-                    outFile.close();
+
                     cout << "Order details saved to file." << endl;
                 } else {
                     cerr << "Error: Could not open file to save order details." << endl;
@@ -1109,7 +1116,7 @@ int main()
                 dispLine();
                 cout << "\t\tMONTHLY ORDER REPORT" << endl;
                 dispLine();
-                cout << left << setw(20) << "Customer Name" << setw(15) << "OrderID" << setw(15) << "Status" << endl;
+                cout << left << setw(15) << "Cust Name" << setw(10) << "OrderID" << setw(15) << "Paid (RM)" << setw(15) << "Status" << endl;
                 while(getline(inFile, line)) 
                 {
                     cout << line << endl;
@@ -1134,7 +1141,6 @@ int main()
     system("cls");
     string itemName[MAX_SIZE];
     double itemPrice[MAX_SIZE]; //array to store orders
-    string input;
 
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. Make Order" << endl;
@@ -1302,24 +1308,8 @@ int main()
 
     double totalPrice;
 
-    totalPrice = newOrder->order.receiptOrder(); 
+    totalPrice = newOrder->order.receiptOrder(input); 
     dispLine();
-
-    if (input == "2")
-    {
-        totalPrice = totalPrice * 0.7;
-    }
-
-    ofstream outFile("OrderHistory.txt", ios::app);
-    if (outFile.is_open())
-    {
-        outFile << fixed << setprecision(2) << totalPrice << endl;
-        outFile.close();
-    }
-    else
-    {
-        cerr << "Error.\n";
-    }
 
     cout << fixed << setprecision(2) << "Total Price:      RM " << totalPrice ;
 

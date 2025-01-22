@@ -828,13 +828,8 @@ int StaffAuth(Staff arr[], int found)
 
 void dispTri() 
 {
-    // Print the top part of all 6 triangles side by side
     cout << " \\    /  \\    /  \\    /  \\    /  \\    /  \\    /";
-
-    // Print the middle part of all 6 triangles side by side
     cout << "\n  \\  /    \\  /    \\  /    \\  /    \\  /    \\  /";
-
-    // Print the bottom part of all 6 triangles side by side
     cout << "\n   \\/      \\/      \\/      \\/      \\/      \\/";
 }
 

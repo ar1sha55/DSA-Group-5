@@ -94,7 +94,7 @@ class CustOrder {
             }
         }
 
-        double receiptOrder(string &input)
+        double receiptOrder(string input)
         {
             double totalPrice = 0;
             for(int i=0; i<counter; i++)
@@ -109,6 +109,7 @@ class CustOrder {
             {
                 totalPrice = totalPrice * 0.7;
             }
+
             return totalPrice;
         }
 
@@ -691,6 +692,7 @@ class QueueOrder
         OrderNode* front;
         OrderNode* back;
         int orderID = 1;
+        string discInput;
     public:
         QueueOrder() {front = NULL; back = NULL;}
 
@@ -763,6 +765,16 @@ class QueueOrder
                 curr = curr->next;
             }
             return 1;
+        }
+
+        void setInput(string inp) 
+        {
+            discInput = inp;
+        }
+
+        string getInput()
+        {
+            return discInput;
         }
 
         OrderNode *getBack() {return back;}
@@ -1083,9 +1095,9 @@ int main()
                 if (outFile.is_open()) {
                     outFile << left << setw(15) << currentNode->order.getCustName() // Customer name
                             << setw(10) << currentNode->order.getOrderID()  // Order ID
-                            << setw(15) << currentNode->order.receiptOrder(input) //totalPrice
-                             << setw(15) << currentNode->order.getOrderStatus() 
-                             << endl; // Order status
+                            << setw(15) << currentNode->order.receiptOrder(order.getInput()) //totalPrice
+                            << setw(15) << currentNode->order.getOrderStatus() 
+                            << endl; // Order status
 
                     cout << "Order details saved to file." << endl;
                 } else {
@@ -1156,6 +1168,8 @@ int main()
         cout << "2. Buy in Combo" << endl << endl;
         cout << "Enter choice: ";
         cin >> input;
+        order.setInput(input);
+
         goto menu_display;
     }
     else if(input == "2")
@@ -1165,6 +1179,7 @@ int main()
 
         cout << "Enter OrderID: ";
         getline(cin, input);
+        
 
         if(!order.isEmpty())
         {

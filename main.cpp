@@ -9,8 +9,6 @@ using namespace std;
 
 const int MAX_SIZE = 100;
 
-
-
 class Staff
 {
     private:
@@ -32,9 +30,10 @@ class CustOrder {
         string custName, contactNum, orderStatus;
         string orderID;
         int counter = 0;
+        string discInput;
 
         string itemName[MAX_SIZE];
-        int itemPrice[MAX_SIZE];
+        double itemPrice[MAX_SIZE];
         
     public:
         vector<string> items;
@@ -70,11 +69,19 @@ class CustOrder {
         void setOrderStatus()
         {
             string status;
-            cout << "Current Status: " << orderStatus << endl;
-            cout << "New Status: ";
+            cout << endl;
+            cout << "Current Status: " << orderStatus << endl << endl;
+
+            cout << "[1] On Delivery [2] Delivered" << endl;
+            cout << "New Status (Enter No.): ";
             getline(cin, status);
-            orderStatus = status;
-            cout << "\n\nStatus Has Been Changed!" << endl;
+
+            if(status == "1")
+                orderStatus = "On Delivery";
+            else if(status == "2")
+                orderStatus = "Delivered";
+
+            cout << "\nStatus Has Been Changed!" << endl;
             system("pause");
         }
 
@@ -90,7 +97,7 @@ class CustOrder {
             for(int i=0; i<counter; i++)
             {
                 cout << left;
-                cout << i+1 << setw(2) << "." << setw(15) << itemName[i] << "RM " << itemPrice[i] << endl;
+                cout << fixed << setprecision(2) << i+1 << setw(2) << "." << setw(15) << itemName[i] << "RM " << itemPrice[i] << endl;
             }
         }
 
@@ -112,7 +119,16 @@ class CustOrder {
 
             return totalPrice;
         }
+        
+        void setInput(string inp) 
+        {
+            discInput = inp;
+        }
 
+        string getInput()
+        {
+            return discInput;
+        }
 };
 
 class Pizza
@@ -742,7 +758,6 @@ class QueueOrder
 
             if(!front) 
                 back = NULL;
-            
         }
 
         //display all order
@@ -750,7 +765,7 @@ class QueueOrder
         {
             if(isEmpty())
             {
-                cout << "No Order Currently Available!" << endl << endl;
+                cout << "No Order Currently Available!" << endl;
                 return 0;
             }
 
@@ -767,29 +782,9 @@ class QueueOrder
             return 1;
         }
 
-        void setInput(string inp) 
-        {
-            discInput = inp;
-        }
-
-        string getInput()
-        {
-            return discInput;
-        }
-
         OrderNode *getBack() {return back;}
         OrderNode *getFront() {return front;}
 };
-
-void customer_menu(int& custChoice)
-{
-    cout << "PIZZARIA RESTAURANT" << endl << endl;
-    cout << "1. View All Menu" << endl;
-    cout << "2. View Order Status" << endl<< endl;
-
-    cout << "Enter choice (Press 0 to back): ";
-    cin >> custChoice;
-}
 
 void staff_menu(int& staffChoice)
 {
@@ -879,9 +874,9 @@ void dispLine()
 int main()
 {
     string choice;
-    char ch; //biar semua function boleh pakai
+    char ch; 
 
-     //Pizza Variables
+    //Pizza Variables
     DoublyLLPizza pizzaList;
 
     //Drink Variables
@@ -1087,15 +1082,15 @@ int main()
 
             system("cls");
 
-            //check if front order dah "Delivered", then system akan dequeue 
+            //check if front order is "Delivered", then system will dequeue 
             if((order.getFront() != NULL) && order.getFront()->order.getOrderStatus() == "Delivered")
             {
-                //letak delivered order dekat dalam file dulu before dequeue so history tu ada
+                // to make a copy of order before dequeue
                 ofstream outFile("OrderHistory.txt", ios::app); // Open in append mode
                 if (outFile.is_open()) {
                     outFile << left << setw(15) << currentNode->order.getCustName() // Customer name
                             << setw(10) << currentNode->order.getOrderID()  // Order ID
-                            << setw(15) << currentNode->order.receiptOrder(order.getInput()) //totalPrice
+                            << setw(15) << currentNode->order.receiptOrder(currentNode->order.getInput()) //totalPrice
                             << setw(15) << currentNode->order.getOrderStatus() 
                             << endl; // Order status
 
@@ -1103,7 +1098,7 @@ int main()
                 } else {
                     cerr << "Error: Could not open file to save order details." << endl;
                 }
-                //lepas dah letak dalam file, baru dequeue
+                
                 order.dequeue();
             }
 
@@ -1118,7 +1113,7 @@ int main()
             system("pause");
             goto staffMenu;
         }
-        //buat reporting kat sini. read from file tunjuk semua info pasal order itu
+        
         case 4 : 
         {
             ifstream inFile("OrderHistory.txt", ios::in);
@@ -1151,8 +1146,6 @@ int main()
 
     customer: 
     system("cls");
-    string itemName[MAX_SIZE];
-    double itemPrice[MAX_SIZE]; //array to store orders
 
     cout << "PIZZARIA RESTAURANT" << endl << endl;
     cout << "1. Make Order" << endl;
@@ -1166,9 +1159,11 @@ int main()
         cout << "PIZZARIA RESTAURANT" << endl << endl;
         cout << "1. Buy in Ala-Carte" << endl;
         cout << "2. Buy in Combo" << endl << endl;
-        cout << "Enter choice: ";
+        cout << "Enter choice (Press 0 to back): ";
         cin >> input;
-        order.setInput(input);
+
+        if(input == "0")
+            goto customer;
 
         goto menu_display;
     }
@@ -1276,6 +1271,8 @@ int main()
                 break;
         }
 
+        newOrder->order.setInput(input);
+        
         newOrder->order.addToCart(itemName, itemPrice);
         newOrder->order.items.push_back(itemName);
 
@@ -1286,6 +1283,8 @@ int main()
             drinkList.displayAllDrink(1);
             cout << "\nSelect Drink You Want (Enter Drink No.): ";
             cin >> drinkNo;
+
+            currentIndex = 1;
 
             while(currentIndex != drinkNo)
             {
@@ -1330,16 +1329,15 @@ int main()
 
     if(input == "2")
     {
-        cout << " (Combo Discount)" << endl;
+        cout << " (Combo Discount 30%)" << endl;
     }
     else
     {
         cout << endl;
     }
-
     dispLine();
 
-    cout << left << setw(20) << "Order Status:" << newOrder->order.getOrderStatus() << endl;
+    cout << left << setw(18) << "Order Status:" << newOrder->order.getOrderStatus() << endl;
 
     dispLine();
     cout << "|\tThank You for Ordering at Pizzaria!\t|" << endl;
@@ -1347,23 +1345,6 @@ int main()
     dispTri();
     cout << endl;
     system("pause");
-    
-    // Task 1
-    // simpan semua data customer dalam file untuk guna dekat report
-    // start simpan data dekat line 1043
-    // start reporting dekat line 1058
-
-    // Task 2
-    // buat satu receipt yang tunjuk semua makanan and harga, cust name, phone no, order id, order status
-    // kalau combo dapat discount sikit
-    // kalau tak combo, harga normal
-    // start dekat line 1225
-
-    // contoh boleh guna ni dalam receipt
-    // cout << endl;
-    // cout << "Name: " << newOrder->order.getCustName() << endl;
-    // cout << "OrderID: " << newOrder->order.getOrderID() << endl;
-    // cout << "Order Status: " << newOrder->order.getOrderStatus() << endl;
     
     goto customer;
 
